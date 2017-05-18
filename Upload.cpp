@@ -1,3 +1,10 @@
+/**
+Hello!
+This is the client that sends the computer name.
+Have a good day!
+**/
+
+
 #include <Windows.h>
 #include <iostream>
 #include <string.h>
