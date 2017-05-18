@@ -22,7 +22,8 @@ TCHAR  infoBuf[INFO_BUFFER_SIZE];
 DWORD  bufCharCount = INFO_BUFFER_SIZE;
 
 // Get and display the name of the computer.
-int sockfd;
+int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+
 
 
 if( !GetComputerName( infoBuf, &bufCharCount ) )
