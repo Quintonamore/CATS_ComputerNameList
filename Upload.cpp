@@ -9,6 +9,7 @@ Have a good day!
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
+#include <tchar.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -27,7 +28,6 @@ int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 if (sockfd == INVALID_SOCKET){
         cerr<<"Socket Initialization: Error creating socket"<<endl;
         system("pause");
-        WSACleanup();
         exit(11);
 }
 
