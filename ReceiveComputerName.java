@@ -17,11 +17,11 @@ import java.text.SimpleDateFormat;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import javax.swing.*;
 
 class ReceiveComputerName
 {
   private static final DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-  private static final String fileName = "Computer_Names.csv";
   private static final String columnNamesList = "Computer Name, Student Tech Initials, Date " + "\n";
   private static final int LISTENING_PORT = 1024;
 
@@ -30,6 +30,21 @@ class ReceiveComputerName
          DatagramSocket serverSocket = new DatagramSocket(LISTENING_PORT);
             byte[] receiveData = new byte[15];
             byte[] sendData = new byte[75];
+            JFrame fileNameFrame = new JFrame("File Name?");
+
+            String fileName = JOptionPane.showInputDialog(fileNameFrame, "Enter the name of the file to store the computer names.","CATS Computer Names filing.", JOptionPane.QUESTION_MESSAGE);
+
+            try{
+                  while(fileName.isEmpty()){
+                  fileName = JOptionPane.showInputDialog(fileNameFrame,"Please enter a valid file name!","CATS Computer Names filing.", JOptionPane.WARNING_MESSAGE);
+                  }
+                } catch (NullPointerException e){
+                  fileName = "Computer_Names";
+                }
+
+                  fileName = fileName + ".csv";
+
+            System.out.println(fileName);
 
             while(true)
                {
@@ -48,7 +63,14 @@ class ReceiveComputerName
 
 
                   DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
-                  serverSocket.send(sendPacket);
+                  try{
+                    System.out.println("Sending Confirmation...");
+                    serverSocket.send(sendPacket);
+                    System.out.println();
+                  } catch (SocketException e){
+                    e.printStackTrace();
+                    System.out.println("Error sending confirmation to client...");
+                  }
               }
       }
 

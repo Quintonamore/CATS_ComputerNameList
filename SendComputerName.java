@@ -30,10 +30,13 @@ public class SendComputerName{
 
     String techInitials = JOptionPane.showInputDialog(initialsFrame,"Enter your initials.","CATS Student Tech Initials.", JOptionPane.QUESTION_MESSAGE);
 
-    while(techInitials == null){
-      System.out.println("In While loop.");
-      techInitials = JOptionPane.showInputDialog(initialsFrame,"Please enter your initials!","CATS Student Tech Initials.", JOptionPane.WARNING_MESSAGE);
-    }
+    try{
+        while(techInitials.isEmpty()){
+          techInitials = JOptionPane.showInputDialog(initialsFrame,"Please enter your initials!","CATS Student Tech Initials.", JOptionPane.WARNING_MESSAGE);
+        }
+       } catch (NullPointerException e){
+         techInitials = "NIL";
+       }
 
     byte[] compNameBytes = new byte[15];
     byte[] receiveData = new byte[75];
@@ -44,7 +47,15 @@ public class SendComputerName{
     InetAddress address = InetAddress.getByName(SERVER_IP);
     DatagramPacket sendPacket = new DatagramPacket(compNameBytes, compNameBytes.length, address, SENDING_PORT);
     DatagramSocket clientSocket = new DatagramSocket();
-    clientSocket.send(sendPacket);
+
+    try{
+      System.out.println("Sending data to server...");
+      clientSocket.send(sendPacket);
+    } catch (SocketException e){
+      e.printStackTrace();
+      System.out.println("Error sending data to PM Server; Write down the computer name, date, and your initials.");
+      System.exit(1);
+    }
 
     DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
     clientSocket.receive(receivePacket);
@@ -52,7 +63,7 @@ public class SendComputerName{
     System.out.println(confirmation);
     clientSocket.close();
 
-    System.out.println("Done");
+    System.out.println("Done...");
     System.exit(0);
   }
 }
